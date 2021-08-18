@@ -4,7 +4,9 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Entity
@@ -30,6 +32,13 @@ public class Ship {
         this.shipType = shipType;
         this.gamePlayerID = gamePlayerID;
         this.locations = locations;
+    }
+
+    public Map<String, Object> makeShipDTO() {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("type", this.getShipType());
+        dto.put("locations", this.getLocations());
+        return dto;
     }
 
 

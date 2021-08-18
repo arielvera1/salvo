@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class GamePlayer {
@@ -18,15 +19,15 @@ public class GamePlayer {
 
     private LocalDateTime joinDate;
 
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player_id")
     private Player playerID;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="game_id")
+    @JoinColumn(name = "game_id")
     private Game gameID;
 
-    @OneToMany(mappedBy="gamePlayerID", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "gamePlayerID", fetch = FetchType.EAGER)
     Set<Ship> ships;
 
     public GamePlayer() {
@@ -85,4 +86,16 @@ public class GamePlayer {
         return dto;
     }
 
+    public Map<String, Object> makeGameViewDTO() {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getGameID().getId());
+        dto.put("creationDate", this.getGameID().getCreationDate());
+        dto.put("gamePlayers", this.getGameID().getGamePlayers()
+                .stream()
+                .map(gamePlayer -> gamePlayer.makeGamePlayerDTO())
+                .collect(Collectors.toList()));
+        dto.put("ships", this.getShips().stream().map(s->s.makeShipDTO()).collect(Collectors.toList()));
+        return dto;
+
+    }
 }
