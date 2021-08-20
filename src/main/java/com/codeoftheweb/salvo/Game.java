@@ -21,6 +21,11 @@ public class Game {
 
     @OneToMany(mappedBy = "gameID", fetch = FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
+//  relacion score
+
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    Set<Score> scores;
+
 
     //constructor
 

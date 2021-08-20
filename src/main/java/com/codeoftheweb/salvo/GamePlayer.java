@@ -30,6 +30,12 @@ public class GamePlayer {
     @OneToMany(mappedBy = "gamePlayerID", fetch = FetchType.EAGER)
     Set<Ship> ships;
 
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+      Set<Salvo> salvos;
+
+
+
+
     public GamePlayer() {
     }
 
@@ -37,6 +43,14 @@ public class GamePlayer {
         this.joinDate = joinDate;
         this.playerID = playerID;
         this.gameID = gameID;
+    }
+
+    public Set<Salvo> getSalvos() {
+        return salvos;
+    }
+
+    public void setSalvos(Set<Salvo> salvos) {
+        this.salvos = salvos;
     }
 
     public Long getId() {
@@ -94,8 +108,12 @@ public class GamePlayer {
                 .stream()
                 .map(gamePlayer -> gamePlayer.makeGamePlayerDTO())
                 .collect(Collectors.toList()));
-        dto.put("ships", this.getShips().stream().map(s->s.makeShipDTO()).collect(Collectors.toList()));
+        dto.put("ships", this.getShips().stream().map(s -> s.makeShipDTO()).collect(Collectors.toList()));
+       dto.put("salvoes", this.getGameID().getGamePlayers()
+                .stream().flatMap(gamePlayer -> gamePlayer.getSalvos().stream().map(salvo -> salvo.makeSalvoDTO())));
         return dto;
+
+
 
     }
 }
