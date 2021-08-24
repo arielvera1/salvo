@@ -4,11 +4,9 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Entity
@@ -23,7 +21,7 @@ public class Player {
     @OneToMany(mappedBy = "playerID", fetch = FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
 
-// relacion score
+    // relacion score
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<Score> scores;
 
@@ -63,6 +61,13 @@ public class Player {
         this.gamePlayers = gamePlayers;
     }
 
+    public Set<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
+    }
 
     public List<Game> getGames() {
         return gamePlayers.stream().map(sub -> sub.getGameID()).collect(Collectors.toList());
@@ -76,7 +81,14 @@ public class Player {
         dto.put("email", this.getUserName());
         return dto;
     }
-}
+
+
+    public Optional<Score> getScore(Game game) {
+        return this.getScores().stream().filter(sc -> sc.getGame().getId()==(game.getId())).findFirst();
+    }
+
+    }
+
 
 
 

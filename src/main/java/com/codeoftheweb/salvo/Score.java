@@ -4,6 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Entity
 public class Score {
@@ -13,14 +15,14 @@ public class Score {
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
 
-    private LocalDateTime date;
+    private LocalDateTime finishDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="game_id")
+    @JoinColumn(name = "game_id")
     private Game game;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="player_id")
+    @JoinColumn(name = "player_id")
     private Player player;
 
     private Double score;
@@ -30,18 +32,18 @@ public class Score {
     }
 
     public Score(LocalDateTime date, Player player, Game game, Double score) {
-        this.date = date;
+        this.finishDate = date;
         this.player = player;
         this.game = game;
         this.score = score;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getFinishDate() {
+        return finishDate;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setFinishDate(LocalDateTime finishDate) {
+        this.finishDate = finishDate;
     }
 
     public long getId() {
@@ -75,4 +77,14 @@ public class Score {
     public void setScore(Double score) {
         this.score = score;
     }
+
+    public Map<String, Object> makeScoreDTO() {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("player", this.getPlayer().getId());
+        dto.put("score", this.getScore());
+        dto.put("finishDate", this.getFinishDate());
+        return dto;
+    }
+
+
 }

@@ -63,12 +63,24 @@ public class Game {
         this.gamePlayers = gamePlayers;
     }
 
+    public Set<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
+    }
 
     public Map<String, Object> makeGameDTO() {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("creationDate", this.getCreationDate());
         dto.put("gamePlayers", this.getGamePlayers().stream().map(gp->gp.makeGamePlayerDTO()).collect(Collectors.toList()));
+        dto.put("scores",this
+                .getGamePlayers()
+                .stream()
+                .map(gp -> {if(gp.getScore().isPresent()){return gp.getScore().get().makeScoreDTO();}
+                else {return null;}}));
         return dto;
     }
 

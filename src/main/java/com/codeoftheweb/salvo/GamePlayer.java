@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -93,12 +94,20 @@ public class GamePlayer {
         this.ships = ships;
     }
 
+
+    /*public Optional<Score> getScore() {
+        return this.getPlayerID();
+    }*/
+
     public Map<String, Object> makeGamePlayerDTO() {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("player", this.getPlayerID().makePlayerDTO());
         return dto;
     }
+
+
+
 
     public Map<String, Object> makeGameViewDTO() {
         Map<String, Object> dto = new LinkedHashMap<>();
@@ -115,5 +124,9 @@ public class GamePlayer {
 
 
 
+    }
+
+    public Optional<Score> getScore() {
+        return this.getPlayerID().getScore(this.getGameID());
     }
 }
