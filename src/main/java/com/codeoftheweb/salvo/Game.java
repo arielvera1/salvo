@@ -80,7 +80,7 @@ public class Game {
                 .getGamePlayers()
                 .stream()
                 .map(gp -> {if(gp.getScore().isPresent()){return gp.getScore().get().makeScoreDTO();}
-                else {return null;}}));
+                else {return "";}}));
         return dto;
     }
 
