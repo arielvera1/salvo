@@ -113,6 +113,7 @@ public class GamePlayer {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getGameID().getId());
         dto.put("creationDate", this.getGameID().getCreationDate());
+        dto.put("gameState", "PLACESHIPS");
         dto.put("gamePlayers", this.getGameID().getGamePlayers()
                 .stream()
                 .map(gamePlayer -> gamePlayer.makeGamePlayerDTO())
